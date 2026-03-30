@@ -3,15 +3,15 @@ import options from '../data/carOptions.js';
 
 const createTable = async () => {
     const createTableQuery = `
-        DROP TABLE IF EXISTS customOption
-        DROP TABLE IF EXISTS customItem
+        DROP TABLE IF EXISTS customItem;
+        DROP TABLE IF EXISTS customOption;
 
         CREATE TABLE customOption (
             id SERIAL PRIMARY KEY,
             category VARCHAR(50) NOT NULL,
             name VARCHAR(255) NOT NULL,
-            imageURL VARCHAR(255) NOT NULL,
-            price DECIMAL(10, 2) NOT NULL
+            imageURL TEXT NOT NULL,
+            price DECIMAL(10, 2) NOT NULL,
             convertibleCompatible BOOLEAN
         );
 
@@ -22,7 +22,8 @@ const createTable = async () => {
             interior_id INT REFERENCES customOption(id) NOT NULL,
             wheels_id INT REFERENCES customOption(id) NOT NULL,
             roof_id INT REFERENCES customOption(id) NOT NULL,
-            totalPrice DECIMAL(10, 2) NOT NULL
+            totalPrice DECIMAL(10, 2) NOT NULL,
+            isConvertible BOOLEAN NOT NULL DEFAULT FALSE
         );
     `
 
@@ -46,7 +47,7 @@ const resetDatabase = async() => {
         await createTable();
         await seedOptions();
     } catch(error) {
-        console.error('Error resetting database:', err);
+        console.error('Error resetting database:', error);
     }
 }
 
